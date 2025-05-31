@@ -5,7 +5,7 @@ class Player(Entity):
         super().__init__(characterName, speed, world)
 
         self.nome = nome
-        self.score = 0.0
+        self.score = 0
     
-    def setScore(self, score: float) -> None:
+    def setScore(self, score: int) -> None:
         self.score = score

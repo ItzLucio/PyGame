@@ -1,6 +1,7 @@
 import pygame
 
 from player import Player
+from debug.debugManager import DebugManager
 from levels.levelsManager import LevelsManager
 
 SCREEN_WIDTH = 1920
@@ -18,7 +19,9 @@ WORLD = {
 }
 
 running = True
-points = 0
+canPlay = True
+paused = False
+showDebugInfo = False
 
 pygame.init()
 screen = pygame.display.set_mode(SCREEN_SIZE, pygame.FULLSCREEN)
@@ -26,27 +29,27 @@ pygame.display.set_caption("Super PyRion")
 
 clock = pygame.time.Clock()
 
-bodyFont = pygame.font.Font("./assets/fonts/Jersey10-Regular.ttf", 55)
-# bodyFont = pygame.font.SysFont("VGASYS", 50)
+bodyFont = pygame.font.Font("./assets/fonts/04B_03__.ttf", 55)
 
 backgroundImage = pygame.image.load("./assets/Background.png")
 backgroundImage = pygame.transform.scale(backgroundImage, SCREEN_SIZE)
-
-groundImage = pygame.image.load("./assets/Ground.png")
-groundImage = pygame.transform.scale(groundImage, GROUND_SIZE)
 
 vignetteImage = pygame.image.load("./assets/Vignette.png")
 vignetteImage = pygame.transform.scale(vignetteImage, SCREEN_SIZE)
 
 player = Player("Lucio", "player", 200, WORLD)
 levelsManager = LevelsManager(WORLD, "./levels/data")
+debugManager = DebugManager(screen, WORLD)
 
 levelsManager.loadLevel(0)
 
-FPS = 60
+FPS = 24
 
 while running:
     deltaTime = clock.tick(FPS) / 1000.0
+
+    if not canPlay or paused:
+        continue
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -55,21 +58,22 @@ while running:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 running = False
+            elif event.key == pygame.K_F3:
+                showDebugInfo = not showDebugInfo
     
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_RIGHT]:
+    if keys[pygame.K_d]:
         player.setVelocityX(1)
-    if keys[pygame.K_LEFT]:
+    if keys[pygame.K_a]:
         player.setVelocityX(-1)
-    if keys[pygame.K_UP]:
+    if keys[pygame.K_SPACE]:
         player.jump()
     
     player.update(deltaTime, levelsManager.collisionTiles)
     
-    pointsText = bodyFont.render(f"Score: {points}", True, "white")
+    pointsText = bodyFont.render(f"Score: {player.score}", True, "white")
     
     screen.blit(backgroundImage, (0, 0))
-    # screen.blit(groundImage, (0, SCREEN_HEIGHT-GROUND_HEIGHT))
 
     levelsManager.drawLevel(screen)
 
@@ -78,5 +82,8 @@ while running:
     screen.blit(vignetteImage, (0, 0))
 
     screen.blit(pointsText, (50, 50))
+
+    if showDebugInfo:
+        debugManager.showDebugInfo(FPS, deltaTime)
 
     pygame.display.flip()

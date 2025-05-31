@@ -4,7 +4,7 @@ def __loadMapLayout(lines, startingLine) -> list:
     mapLayout = []
 
     for lineNumber in range(len(lines)-1):
-        if lineNumber <= startingLine:
+        if lineNumber <= startingLine + 1:
             continue
 
         if not lines[lineNumber].startswith("MAP_END"):

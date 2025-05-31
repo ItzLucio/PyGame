@@ -7,7 +7,7 @@ def __loadImagesFromDir(folderPath) -> list:
     for fileName in sorted(os.listdir(folderPath)):
         if fileName.endswith(".png") or fileName.endswith(".jpg"):
             frame = pygame.image.load(os.path.join(folderPath, fileName)).convert_alpha()
-            frames.append(pygame.transform.scale(frame, (100, 150)))
+            frames.append(pygame.transform.scale(frame, (100, 180)))
     
     return frames
 
