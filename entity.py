@@ -68,7 +68,10 @@ class Entity():
                 self.currentFrameIndex = (self.currentFrameIndex + 1) % len(self.currentStateFrames)
         else:
             self.currentFrameIndex = 0
-        
+
+        if self.currentFrameIndex >= len(self.currentStateFrames):
+            self.currentFrameIndex = 0
+
         self.currentFrame = self.currentStateFrames[self.currentFrameIndex]
 
     def setPosition(self, x: int, y: int) -> None:

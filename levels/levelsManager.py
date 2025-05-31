@@ -9,7 +9,10 @@ tilesData = {
     "G0": pygame.transform.scale(pygame.image.load("./assets/grass/Grass0.png"), (100, 100)),
     "G1": pygame.transform.scale(pygame.image.load("./assets/grass/Grass1.png"), (100, 100)),
     "G2": pygame.transform.scale(pygame.image.load("./assets/grass/Grass2.png"), (100, 100)),
-    "M": pygame.transform.scale(pygame.image.load("./assets/mud/Mud0.png"), (100, 100)),
+    "M0": pygame.transform.scale(pygame.image.load("./assets/mud/Mud0.png"), (100, 100)),
+    "M1": pygame.transform.scale(pygame.image.load("./assets/mud/Mud1.png"), (100, 100)),
+    "M2": pygame.transform.scale(pygame.image.load("./assets/mud/Mud2.png"), (100, 100)),
+    "M3": pygame.transform.scale(pygame.image.load("./assets/mud/Mud3.png"), (100, 100)),
     "B": pygame.transform.scale(pygame.image.load("./assets/mud/Mud0.png"), (100, 100)),
     " ": None
 }
@@ -47,6 +50,8 @@ class LevelsManager:
             for ch in row:
                 if ch == "G":
                     currentRow.append(ch+str(random.randint(0, 1)))
+                elif ch == "M":
+                    currentRow.append(ch+str(random.randint(0, 3)))
                 else:
                     currentRow.append(ch)
             self.currentLevelLayout.append(currentRow)
@@ -83,8 +88,6 @@ class LevelsManager:
                 # Calcola le coordinate per il disegno
                 x = col_idx * self.world["TILE_SIZE"]
                 y = self.world["SCREEN_SIZE"][1] - ((row_idx + 1) * self.world["TILE_SIZE"])
-
-                print(x, y, img)
 
                 screen.blit(img, (x, y))
 
